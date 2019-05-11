@@ -1,0 +1,103 @@
+(c) Daniel Doubrovkine - All Rights Reserved - University of Geneva - 1995
+                         email welcome: dblock@infomaniak.ch
+
+XCompare 1.32 (ASU) - Documentation for the Advanced Structural Compare Util.
+
+XCOMP is the most powerfull free compare utility ever made.
+
+XCOMP is designed to compare separate files or full directory structures.
+The  biggest interest  of this software is to compare two entire  directories,
+subdirectories  included.  If you  make a copy of a hard disk onto a CD or  a  
+SYQUEST and you are not quite sure of the result, just compare the source and
+the target directories, fast and efficiently!
+
+Disclaimer: The author claims no responsibility for damages caused by any
+use of this software, as well as third party modifications of the
+original code of XC destributed freely to encourage and help developpers.
+Though XC is totally  free, it does entirely  remain  the property of it's
+author, and thus cannot be sold! Any illegal sale of this software will be 
+prosecuted at maximum extent possible under the federal criminal law of the
+Helvetic Confederation.
+
+
+Features:
+
+   Global syntax: xc <source> <target> <options> <> output>
+   Errors and information are extensively displayed.
+
+        i) options:
+                -? : show the help screen
+                -s : do not include subdirectories
+                -p : pause on all errors (inexistant files, etc...)
+                -f : pause on compare errors only (different files only)
+                -q : quiet mode, show statistics only (overrides -f and -p)
+                -e : show compare errors only (-q is thus enabled too)
+                -i : show matching files only (-q is thus enabled too)
+                -z : compare file size only
+                -b : beep on errors
+                -l : do not compare files of different size
+                -x : look for files' existance only
+		-u : (much) slower operations but 100% ctrl-break response
+
+           Note: options may start with '/' as well as '-'
+                 options may also be capitals
+
+           </ optput> : you can redirect the output from the screen to a file,
+                        ex: "> RESULT.TXT".
+
+        ii) compare separate files:
+
+          xc <file1> <file2>
+
+           will perform a byte to byte compare between <file1> and <file2>.
+
+        iii) compare full directory structures:
+
+          xc <directory2> <directory2>
+
+           will look for all files in directory 1 and compare to the same
+           names in directory2, subdirectories included. This is very usefull
+           for an xcopy checking and is one of the biggest interests of
+           xCOMPARE.
+
+        iv) compare flagged files:
+
+          xc <flagged files> <directory2>
+
+           will look for the flag (ex: C:\DOS\*.EXE) and compare the matching
+           files with those in <directory2> with the same names.
+
+        v) compare directory to a file:
+
+          xc <directory> <file>
+
+           will compare all files in <directory> to <file>. Use -i option
+           to get the matching files only. You will thus find same files
+           as <file> in <directory> even if the names are different.
+
+
+        vi) compare flagged files to a file:
+
+          xc <flagged files> <file>
+
+           will compare <flagged files> to <file>. Use -i option
+           to get the matching files only. You will thus find same files
+           as <file> in the specified group even if the names are different.
+
+        vii) assumed syntax:
+
+             #   <.> is assumed to *.*
+             #   <directory> without a flag is extended to directory\*.*
+             #   <drive:directory>, where <directory> is not immediatly in
+                 root, is exploded to full <directory>'s path.
+             #   xCOMPARE checks for source and target type. Thus, <directory>
+                 may not end with <\>. In this case '\*.*' is assumed.
+
+        viii) ESC or CTRL-BREAK abort xCOMPARE during standard functions
+              (only when switches to the next file to compare).
+              
+
+Under contruction:
+
+     #  compare all files in a directory with all files in another directory,
+        without the name match.

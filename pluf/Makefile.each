@@ -1,0 +1,25 @@
+UNAME = $(shell uname -a | cut -f1 -d' ')
+WARNINGS = -Wall
+ADDSunOS = -fhandle-exceptions
+ADDLinux = -fhandle-exceptions
+#-fguiding-decls -fexceptions
+CURADD = $(ADD$(UNAME))
+FOPTIONS = -fomit-frame-pointer -fno-implicit-templates 
+CC = c++ -c $(FOPTIONS) $(CURADD) $(WARNINGS)
+CLASS = ../obj
+SOURCES=$(shell ls *.cpp)
+TARGETS=$(addprefix $(CLASS)/,$(subst cpp,o,$(SOURCES)))
+TARGETS_CLEAN=$(addprefix $(CLASS)/,$(subst cpp,clean,$(SOURCES)))
+INCLUDES=../
+
+all: $(TARGETS)
+
+clean: $(TARGETS_CLEAN) $(TARGETS)
+
+$(CLASS)/%.o : %.cpp
+	$(CC) -I $(INCLUDES) $< -o $@
+
+$(CLASS)/%.clean:
+	touch $(subst clean,o,$@)
+	rm $(subst clean,o,$@)
+

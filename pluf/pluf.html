@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  
+  <head><script src="//archive.org/includes/analytics.js?v=cf34f82" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app101.us.archive.org';v.server_ms=165;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="/_static/js/ait-client-rewrite.js" charset="utf-8"></script>
+<script type="text/javascript">
+WB_wombat_Init("https://web.archive.org/web", "19990427063829", "cuiwww.unige.ch:80");
+</script>
+<script type="text/javascript" src="/_static/js/wbhack.js" charset="utf-8"></script>
+<script type="text/javascript">
+__wbhack.init('https://web.archive.org/web');
+</script>
+<link rel="stylesheet" type="text/css" href="/_static/css/banner-styles.css" />
+<link rel="stylesheet" type="text/css" href="/_static/css/iconochive.css" />
+<!-- End Wayback Rewrite JS Include -->
+
+    <title>Compilation - Pluf</title>
+  </head>
+  
+  <body bgcolor="#EEEEFF">
+      <blockquote>
+	
+	  <table>
+	    <tr>
+	      <td align="center">
+		<img src="https://web.archive.org/web/19990427063829im_/http://cuiwww.unige.ch/Widgets/cuiLogo.gif">
+	      </td>
+	      <td align="left">
+		<h3>Programming Linear Usage Filter (PLUF)</h3>
+		<font size="-1">
+		  TP de fin d'ann&eacute;e du cours de Compilation
+		  <br>Daniel Doubrovkine - Universit&eacute; de Gen&egrave;ve<br>Mai 1998 -
+		  <a href="https://web.archive.org/web/19990427063829/mailto:doubrov5@cuimail.unige.ch">doubrov5@cuimail.unige.ch</a>
+		</font>         
+	      </td>
+	    </tr>
+	  </table>
+	  
+	  <hr>
+
+	  <h3>Buts, Concepts et Idees</h3>
+	  <blockquote>
+	      Le but est de r&eacute;aliser un filtre general programmable, afin de permettre
+	      a un utilisateur de traiter des donn&eacute;es diverses en entr&eacute;e pour les
+	      transformer &agrave; l'aide des expressions regulieres.
+	      <br><br>
+	      Pour exemple, le but a atteindre est la transformation de deux entrees telles que
+	      <blockquote>
+		  <pre>
+00097425    2191880099417802VLE VERT,ALBERT          M19451217ORL1
+00097426    8451980099315209 BOLOMEY,PAULE           F19900301MAT 
+		  </pre>
+	      </blockquote>
+	      compos&eacute;es de champs bien d&eacute;finis (num&eacute;ro de message, d&eacute;cimal sur 8 caracteres, cadr&eacute; &agrave; droite, etc...),
+	      en des r&eacute;sultats tels que
+	      <blockquote>
+		  <pre>
+99417802    219188M.  VIP                             17-JAN-1945
+99315209    845198MME BOLOMEY         PAULE           01-APR-1990		    
+		  </pre>
+	      </blockquote>
+	      et ceci d'une mani&egrave;re automatique, i.e. l'utilisateur pr&eacute;cisera le format des donnees en entr&eacute;e et la 
+	      fa&ccedil;on de g&eacute;n&eacute;rer les r&eacute;sultats en sortie.	      
+	  </blockquote>
+	  
+	  <h3>Probl&egrave;mes Rencontres et Solutions Adopt&eacute;es</h3>
+	  <blockquote>
+	      <b>Le langage</b> choisi pour <b>Pluf</b> est le C++. Le but &eacute;tant aussi de cr&eacute;er un outil
+	      facilement modifiable et portable sur toutes les platformes. Afin de ne pas d&eacute;pendre d'outils
+	      externes, ni d'implementations de programmes diverses, je n'ai utilis&eacute; ni yacc ni lex, malgr&eacute;
+	      la puissance incontestable de ces derniers. Je voulais aussi essayer de ne garder qu'un minimum 
+	      de passes d'analyse et d'utiliser la puissance du C++ a tous les niveaux.
+	      <br><br>
+	      
+	      <b>Pluf</b> signifie <b>P</b>rogrammable <b>L</b>inear <b>U</b>sage <b>F</b>ilter, ce qui a &eacute;t&eacute; 
+	      trouve apres le nom &eacute;videmment.
+	      <br><br>
+	      
+	      Pluf utilise tr&egrave;s intensivement deux classe externes (provenant de ma librairie 
+	      <a href="https://web.archive.org/web/19990427063829/http://sti.infomaniak.ch/mozilla">MV4</a>). <b>CString</b> pour les cha&icirc;nes
+	      de caract&egrave;res - la version actuelle est tres performante, au minimum autant, 
+	      sinon plus, que le CString dans p.ex. les MFC. <b>Ilist</b> - un vecteur de pointeurs, 
+	      tr&egrave;s pratique pour stoquer des valeurs non-uniformes. D'autres classes, 
+	      telles que CVector ont &eacute;t&eacute;s egalement utilisees.
+	      <br><br>
+	      
+	      Pluf fonctionne en trois phases:<br>
+	      <ol>
+		<li><u>L'analyse du format des donnees en entr&eacute;e</u> et la construction d'un
+		  graphe de CField-s. Chaque CField peut &ecirc;tre de deux sortes: &eacute;lementaire et compos&eacute;. Un CField compos&eacute; est
+		  simplement un CField contenant d'autres CField-s d'une mani&egrave;re r&eacute;cursive, un CField &eacute;lementaire est
+		  un champ terminal. Les terminaux peuvent &ecirc;tre un string (%s) (note: les chaines de caract&egrave;res peuvent &ecirc;tre 
+		  mises entre des ()), un entier (%i), un simple charact&egrave;re
+		  alphanum&eacute;rique (%c), un tabulateur (%t), un espace (% ) et un retour &agrave; la ligne (%n) (notons que
+		  le retour &agrave; la ligne n'est pas simplement \n\r, mais une s&eacute;quence compl&egrave;te de caract&egrave;res &lt; 32 afin
+		  de simplifier les expressions en entr&eacute;e). La syntaxe permet de d&eacute;passer un certain nombre de charact&egrave;res
+		  sans les stocker, ceci se faisant avec un ';' derri&egrave;re le terminal. Notons que %;; termine le traitement
+		  en sautant tous les caract&egrave;res qui suivent.
+		  <br><br>
+		  L'ennonc&eacute; du TP pr&eacute;cisait le fait que chaque champ en entr&eacute;e &eacute;tait de taille connue. Pluf impl&eacute;mente
+		  les deux approches, il est possible de sp&eacute;cifier la taille du champ terminal (%[ isctn;][;][:0..9]), mais
+		  ceci n'est pas obligatoire. Ainsi, %s%i dans "abcd12" retournera "abcd" suivi d'un entier 12, mais "%s:5%i" 
+		  retournera "abcd1", suivi d'un entier 2.
+		  <br><br>
+		  Pluf est capable de nommer les champs d'une mani&egrave;re manuelle et automatique simultan&eacute;ment. 
+		  Les champs automatiques sont
+		  sous la forme "A[0..9]" (i.e. A1, A2, A3...). Les champs manuels se d&eacute;finissent comme suit:
+		  Nom=Expression. Pluf a un champ nomm&eacute; par d&eacute;faut: <em>Expression</em>.
+		  Il s'agit d'une &eacute;tape des donn&eacute;es extraites compl&egrave;te. Les champs nomm&eacute;s peuvent contenir d'autres champs
+		  nomm&eacute;s. Ex: <pre>nomcomplet=prenom=%s,%c: ,nom=%s%n;</pre> avec en entr&eacute;e <pre>Bill Gates</pre> donnera les variables 
+		  suivantes:
+		  <br><br>
+		  <ul>
+		    <li>A0=<em>Bill</em> - le premier champ lu (%s)
+		    <li>prenom=<em>Bill</em> - &agrave; cause de prenom=%s
+		    <li>A1= - le deuxi&egrave;me champ lu, un espace (%c: ), un charact&egrave;re entre a et z s'ecrit %c:a-z
+		    <li>A2=<em>Gates</em> - le troisi&egrave;me champ lu (%s)
+		    <li>nom=<em>Gates</em> - &agrave; cause de nom=%s
+		    <li>nomcomplet=<em>Bill Gates</em> - englobe l'exrpression compl&egrave;te depuis nomcomplet=
+		    <li>Expression=<em>Bill Gates</em> - l'expression en entr&eacute;e est en faite 
+		      <pre>Expression=nomcomplet=prenom=%s,%c: ,nom=%s%n;</pre>
+		  </ul>
+		  <br>
+		  Les variables peuvent se composer d'autres variables de deux mani&egrave;res: it&eacute;rative et recursive.
+		  La diff&eacute;rence est dans le s&eacute;parateur: <pre>un=%s%c,deux=%s%n;</pre> donnera: <em>un=Bill</em> et
+		  <em>deux=Gates</em>. En revanche, <pre>un=%s%c|deux=%s%n;</pre> donnera: <em>un=Bill Gates</em>
+		  et <em>deux=Gates</em>.
+		  <br><br>
+		  Il n'est pas possible d'&eacute;craser les champs nomm&eacute;s manuels, mais il est possible d'&eacute;craser les champs
+		  automatiques.
+		  <br><br>
+		<li><u>La lecture des donn&eacute;es et le remplissage des CField-s</u>. Le graphe g&eacute;n&eacute;r&eacute; par la premi&egrave;re phase
+		  est parcouru de haut en bas et les donn&eacute;es sont lues selon le format de chaque CField. Cette &eacute;tape est
+		  extremmement simple et aurait p&ucirc; m&ecirc;me &ecirc;tre integr&eacute;e dans la phase 1. Ceci serait au d&eacute;triment de la
+		  clart&eacute; des erreurs et ne serait pas un bien grand gain de vitesse. Le code de remplissage d'un CField
+		  constitue le moteur de cette phase:
+		  <pre>
+void CFilter::FillField(CField * Field, const CString&amp; Input, int&amp; CurPos){
+  if (Field-&gt;Composite.Count()) {
+     for (int i=0;i<field->Composite.Count();i++) {
+       if (CurPos &gt;= Input.StrLength()) break;
+       FillField(Field-&gt;Composite[i], Input, CurPos);
+     }
+  } else {
+    if (Field-&gt;Skipper) SkipElement(Input, CurPos, Field);
+    else if (Field-&gt;Elementary == CFEChar) Field-&gt;Push(new char(ReadChar(Field-&gt;Constraints, Input, CurPos)));
+    else if (Field-&gt;Elementary == CFEString) Field-&gt;Push(new CString(ReadString(Field-&gt;Bound, Input, CurPos)));
+    else if (Field-&gt;Elementary == CFEInteger) Field-&gt;Push(new int(ReadInteger(Field-&gt;Bound, Input, CurPos)));
+    else {
+      Bailing("Invalid type!", Input, CurPos);
+    }
+  }
+}
+		  </pre>
+		<li><u>La g&eacute;n&eacute;ration des r&eacute;sultats</u> se fait par la classe CProcessor, uniqement dans le cas o&ugrave; les deux 
+		  &eacute;tapes pr&eacute;c&eacute;dentes ont
+		  abouti sans erreurs. La syntaxe est relativement simple. Tout d'abord, chaque caract&egrave;re pr&eacute;c&eacute;d&eacute; d'un '\' 
+		  est consid&eacute;r&eacute; comme tel, sauf \t (tabulateur) et \n (retour &agrave; la ligne). Un champ (une variable) 
+		  commence par un '%'. Tout le texte autour du champ
+		  est libre et sera repliqu&eacute; comme tel. Une variable poss&egrave;de une syntaxe cha&icirc;n&eacute;e: %nomvar[Op1[Op2]].
+		  Le nom doit &ecirc;tre un des noms manuels ou automatiques d&eacute;finis dans la premi&egrave;re phase. Les op&eacute;rateurs sont
+		  les suivants:<br><br>
+		  <ul>
+		    <li><b>&lt;&gt;[c%i]</b>: compl&eacute;mentation &agrave; gauche et &agrave; droite. 
+		      Le champ sur lequel l'op&agrave;rateur est execut&eacute; sera compl&eacute;t&eacute; &agrave; gauche ou &agrave; droite par le caract&egrave;re c
+		      jusqu'&agrave; la longeur i si n&eacute;cessaire, ex: %nom&lt; 12 compl&egrave;te le nom jusqu'&agrave; 12 caract&egrave;res 
+		      (c&ocirc;t&eacute; gauche) avec des espaces.
+		    <li><b>~[m]</b> : transformateur, actuellement ~m est le seul transormateur d&eacute;fini. Il transforme la
+		      variable en un entier mod 12, et en retourne le mois correspondant sur 3 lettres en fran&ccedil;ais. Ex: 
+		      <em>%month~m</em> retournera <em>JAN</em> si <em>month=1</em>.
+		    <li><b>=[[=]!]</b> : comparaison, p.ex: <em>%nom=%prenom=(Le pr&eacute;nom est &eacute;gal au nom)!(Le pr&eacute;nom est diff&eacute;rent du nom)</em>.
+		    <li><b>^[c%i]</b> : vectorisation (tokenizer), vectorise la valeur de la variable avec le s&eacute;parateur c et en retourne
+		      le i-&egrave;me &eacute;l&eacute;ment (premier &eacute;l&eacute;ment: 1). Ex: <em>%nom="Albertm,Einstein"</em>, <em>%nom^,2</em> retourne 
+		      <em>Einstein</em>.
+		    <li><b>-%i1%i2</b> : cut, enl&egrave;ve i2 caract&egrave;res de la valeur de la variable en commencant &agrave; la position i1.
+		    <li><b>+%i1%i2</b> : copy, retourne une partie de la valeur de la variable entre val[i1] et val[i2].
+		    <li><b>|[lrbn]</b> : trim, enl&egrave;ve s'il y a, des espaces &agrave; gauche (l), &agrave; droite (r), &agrave; droite et &agrave; gauche (b),	
+		      et des caract&egrave;res inf&eacute;rieurs &agrave; ' ' &agrave; droite et &agrave; gauche (n) (supprime les retours &agrave; la ligne p.ex.).
+		  </ul>
+		  <br><br>
+		  Les op&eacute;rateurs peuvent donc se suivre, le r&eacute;sultat est gard&eacute; chaque fois: <pre>%nompat|b^,1&gt; 16</pre> 
+		  retourne le premier champ de %nompat et le compl&egrave;te jusqu'&agrave; 16 caract&egrave;res &agrave; droite avec des espaces.
+		  <br><br>
+	      </ol>
+	  </blockquote>
+	  
+	  <h3>Gestion d'Erreurs:</h3>
+	  <blockquote>
+	      Pluf signalera les erreurs jusqu'&agrave; ce qu'il en accumule un certain nombre o&ugrave; jusqu'&agrave; la phase suivante:
+	      <pre>
+[0] - Sorry Dave, error at pos 21: Name already defined!
+      %c|un=%s%n
+           ^
+[1] - Sorry Dave, error at pos 21: Empty string!
+      %c|un=%s%n
+           ^
+[2] CFilter::DefineFields() - syntax errors!
+	      </pre>
+	      Il est clair que apr&egrave;s la premi&egrave;re erreur, les suivantes sont en grande partie g&eacute;n&eacute;r&eacute;es artifiellement.
+	      Tout de m&ecirc;me cel&agrave; permetterait de faire de la r&eacute;cup&eacute;ration d'erreurs.
+	  </blockquote>
+	  <h3>Exemple d'Execution</h3>
+	  <blockquote>
+	      Avec l'exemple dans l'ennonc&eacute;. <br><br>
+	      
+	      Les donn&eacute;es:
+	      <pre>
+00097425    2191880099417802VLE VERT,ALBERT          M19451217ORL1
+00097426    8451980099315209 BOLOMEY,PAULE           F19900301MAT 
+	      </pre>
+	      
+	      La commande
+	      <pre>
+cat demodata.txt | pluf "nummess=%i:8,numpat=%i:10,numsej=%i:10,vip=%c: V,nompat=%s:24,sex=%c:FM,yy=%i:4,
+mm=%i:2,dd=%i:2,service=%s:4,%c;%n;" "%numsej&lt; 10%numpat&lt; 10%sex=F=(MME )!(M.  )%vip=V=(VIP
+)!(%nompat|b^,1&gt; 16%nompat|b^,2&gt; 16)%dd&lt;02\-%mm~m\-%yy\n"
+	      </pre>
+	      donne bien
+	      <pre>
+99417802    219188M.  VIP                             17-JAN-1945
+99315209    845198MME BOLOMEY         PAULE           01-APR-1990
+	      </pre>
+	  </blockquote>
+	  <h3>Remarques:</h3>
+	  <blockquote>
+	      Pour la syntaxe des E/S ainsi que les autres commandes, executer: "pluf --help".
+	  </blockquote>
+	  
+	  <h3>Binaires</h3>
+	  <ul>
+	    <li>[ <a href="pluf.SunOs">Solaris 2 / SunOS 5.5.1</a> ]
+	    <li>[ <a href="pluf.Linux">Linux i386</a> ]
+	  </ul>
+	  
+	  <h3>Code Source</h3>
+	  <ul>
+	    <li><a href="">R&eacute;pertoire Racine</a>
+	    <li>Code de ma librairie <a href="https://web.archive.org/web/19990427063829/http://sti.infomaniak.ch/mozilla">MV4</a> (domaine public), reutilise 
+	      pour ce projet:
+	      <br>[ <a href="cstring/cstring.h">cstring.h</a> / <a href="cstring/cstring.cpp">cstring.cpp</a> ]
+	      - CString, gestion des chaines de caracteres
+	      <br>[ <a href="cvector/cvector.h">cvector.h</a> / <a href="cvector/cvector.cpp">cvector.cpp</a> ]
+	      - CVector, un vecteur de classes
+	      <br>[ <a href="slist/slist_v2.h">slist_v2.h</a> / <a href="slist/slist_v2.cpp">slist_v2.cpp</a> ]
+	      - slist et le template ilist, un vecteur de pointeurs
+	      <br><br>
+	    <li>Code de pluf:
+	      <br>[ <a href="cfield/cfield.h">cfield.h</a> / <a href="cfield/cfield.cpp">cfield.cpp</a> ]
+	      - CField, container des donnees en entree de pluf
+	      <br>[ <a href="cfilter/cfilter.h">cfilter.h</a> / <a href="cfilter/cfilter.cpp">cfilter.cpp</a> ]
+	      - CFilter, le "maitre nageur" de pluf, l'analyseur syntaxique et lexical du format des donnees et l'analyseur
+	      des donnees memes
+	      <br>[ <a href="cproc/cproc.h">cproc.h</a> / <a href="cproc/cproc.cpp">cproc.cpp</a> ]
+	      - CProcessor, le transformateur des donnes de CFilter
+	      <br>[ <a href="cpf/cpf.cpp">cpf.cpp</a> ]
+	      - le main, l'organisateur du travail
+	      <br>[ <a href="Makefile">Makefile</a> / <a href="Makefile.each">Makefile.each</a>  ]
+	      - les Makefiles	
+	  </ul>
+	  <p align="center">
+	    <font size="-2">Compliateurs - Daniel Doubrovkine - 1998 - doubrov5@cuimail.unige.ch</font>
+	  </p>
+	  
+      </blockquote>
+  </body>
+</html>
+<!--
+     FILE ARCHIVED ON 06:38:29 Apr 27, 1999 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 13:08:57 May 11, 2019.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  LoadShardBlock: 71.858 (3)
+  esindex: 0.006
+  captures_list: 85.77
+  CDXLines.iter: 10.121 (3)
+  PetaboxLoader3.datanode: 50.443 (4)
+  exclusion.robots: 0.146
+  exclusion.robots.policy: 0.136
+  RedisCDXSource: 1.766
+  PetaboxLoader3.resolve: 69.801 (3)
+  load_resource: 69.477
+-->
