@@ -1,0 +1,72 @@
+; *************************** FONCTIONS DU DOS ***************************
+
+; note: Tous les registres sauf ah et les valeurs de retour sont pr‚serv‚s
+
+doscall macro
+        int     21h
+        endm
+
+; Affiche le caractŠre contenu dans DL
+write   macro
+        mov     ah,2
+        doscall
+        endm
+
+; Affiche la chaŒne de caractŠres point‚e par DS:DX
+writestring macro
+        mov     ah,9
+        doscall
+        endm
+
+; Affiche le string donn‚ comme op‚rande
+print   macro   text
+        push    dx
+        mov dx,offset text
+        writestring
+        pop     dx
+        endm
+
+; Lecture d'un caractŠre retourn‚ dans AL
+read    macro
+        mov     ah,1
+        doscall
+        endm
+
+; Lecture d'une chaŒne de caractŠres dans une variable
+readln  macro
+        mov     ah,0ah
+        doscall
+        endm
+
+; Fin de l'ex‚cution sans erreurs
+exit    macro
+        mov     ax,4C00h
+        doscall
+        endm
+
+; Fin de l'ex‚cution avec erreur
+exiterr macro   erreur
+        mov     ah,4Ch
+        mov     al,erreur
+        doscall
+        endm
+
+; Affichage d'un return/line-feed
+crlf      macro
+          push      dx
+          mov       dx,10
+          write
+          mov       dx,13
+          write
+          pop       dx
+          endm
+
+; Affichage d'un espace
+espace    macro
+          push      dx
+          mov       dx,32
+          write
+          pop       dx
+          endm
+
+

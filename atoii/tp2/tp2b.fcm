@@ -1,0 +1,63 @@
+      ! [CMFortran.TP2b.ATO-II][30.10.97]
+      ! [Daniel Doubrovkine][doubrov5@cuimail.unige.ch]
+      IMPLICIT NONE
+       
+      INTEGER,PARAMETER::nSize = 8
+       REAL,ALLOCATABLE,ARRAY(:)::iArray
+       REAL VectorSum, VSum
+       INTEGER,ARRAY(1)::VSize
+	
+       !initialize an array for random size and get a random positive integer
+       VSize = 0                
+       CALL cmf_random(VSize, 100)   
+       !allocate the used array and randomize it's values
+       ALLOCATE(iArray(VSize(1))) 
+       iArray = 0.0
+       CALL cmf_random(iArray)
+       !calculate the sum of the array elements
+       VSum = VectorSum(iArray)
+       !cleanup
+       DEALLOCATE(iArray)
+           
+      END
+
+      REAL FUNCTION VectorSum(iArray)
+       REAL,ARRAY(:)::iArray
+       REAL, ALLOCATABLE, ARRAY(:)::tArray
+       INTEGER I,J(1)
+       !get the upper bound of the array passed in arguments
+       J = UBOUND(iArray)
+
+       !get a result for comparison
+       write (*,*), 'Processing vector of size:  ', UBOUND(iArray)
+       write (*,*), '_official_ vector sum is :  ', SUM(iArray)
+
+       !first way calculation, each processor knows about the complete sum
+       !this is a dummy method and is as slow as if using a simple DO loop
+       ALLOCATE(tArray(J(1)))
+       tArray = iArray
+       DO I=1,J(1) - 1
+        iArray = iArray + cshift(tArray,dim=1,shift=I) 
+       END DO
+       write (*,*), 'first result is: ', iArray(1)
+
+       !this is much better, each element is added to it's left neighbour
+       !(except for the leftmost one)
+       !then the array is _compressed_ removing every intermediate elt
+       !(here useless sums are replaced by zeros), etc...
+       iArray = tArray
+       DO I=1,J(1)/2+1
+        iArray=iArray+eoshift(iArray,dim=1,shift=2**(I-1),boundary=0.0)
+        iArray(2:J(1):I*2) = 0.0
+        END DO
+       write (*,*), 'second result is: ', iArray(1)
+
+       !cleanup
+       DEALLOCATE(tArray)
+       VectorSum = SUM(iArray)
+       
+      END
+
+ 
+
+      

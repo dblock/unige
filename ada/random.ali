@@ -1,0 +1,58 @@
+V "GNAT Lib v3.04  "
+S "1233433443      "
+Q F
+
+U random%b		random.adb		47ab8824  NE  PK
+W ada%s			ada.ads			ada.ali
+W ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
+W ada.integer_text_io%s	a-inteio.ads		a-inteio.ali
+W calendar%s		calendar.ads		calendar.ali
+W text_io%s		text_io.ads		text_io.ali
+
+U random%s		random.ads		c210b99d  NE  PK
+
+D ada.ads		960607050237
+D a-calend.ads		960607050238
+D a-caldel.ads		960607050238
+D a-except.ads		960607050240
+D a-finali.ads		960607050241
+D a-filico.ads		960607050326
+D a-inteio.ads		960607050241
+D a-ioexce.ads		960607050241
+D a-reatim.ads		960607050245
+D a-stream.ads		960607050248
+D a-tags.ads		960607050251
+D a-textio.ads		960607050258
+D a-tiinio.ads		960607050255
+D calendar.ads		960607050237
+D interfac.ads		960607050237
+D i-c.ads		960607050311
+D i-cpoerr.ads		960607050413
+D i-cporte.ads		960607050417
+D i-cpotim.ads		960607050413
+D i-csthre.ads		960607050413
+D i-csycon.ads		960607050417
+D random.ads		970204134635
+D random.adb		970204134617
+D system.ads		960607050231
+D s-exctab.ads		960607050336
+D s-ficobl.ads		960607050324
+D s-finimp.ads		960607050325
+D s-finroo.ads		960607050326
+D s-parame.ads		960607050331
+D s-secsta.ads		960607050334
+D s-stalib.ads		960607050335
+D s-stoele.ads		960607050335
+D s-stratt.ads		960607050336
+D s-tasclo.ads		960607050339
+D s-tcmasp.ads		960607050344
+D s-tasinf.ads		960607050339
+D s-taspri.ads		960607050408
+D s-taspda.ads		960607050341
+D s-tastim.ads		960607050419
+D s-taskin.ads		960607050340
+D s-taprob.ads		960607050338
+D s-tasoli.ads		960607050341
+D s-unstyp.ads		960607050345
+D text_io.ads		960607050237
+D unchconv.ads		960607050237

@@ -1,0 +1,17 @@
+ping failed: Host unreachable: Dest. Unreachable
+
+Debugging information for interface ifcust  Addr(6): 00 00 c0 dc 9b 5a
+interrupts: 0 (749 receive, 0 transmit)
+packets received: 749, transmitted: 791
+receive errors: 0, unknown types: 0
+	runts: 0, aligns: 0, CRC: 0, parity: 0, overflow: 0
+	too big: 0, out of buffers: 0, rcv timeout: 0, rcv reset: 0
+transmit errors: 0
+	collisions: 0, underflows: 0, timeouts: 0, resets: 0
+	lost crs: 0, heartbeat failed: 0
+ARP statistics:
+arps received: 4 (2 requests, 2 replies)
+	bad: opcodes: 0, hardware type: 0, protocol type: 0
+arps transmitted: 39 (39 requests, 0 replies)
+5 large buffers; 4 free now; minimum of 4 free
+5 small buffers; 5 free now; minimum of 3 free

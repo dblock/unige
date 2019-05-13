@@ -1,0 +1,41 @@
+Added in the following piece of code at line 18:
+
+void		interpose_menu_popup(Xv_window, Event *, Notify_arg, Notify_event_type);
+Added in the following piece of code at line 283:
+
+
+/*
+ * Event callback function for `status_pane'.
+ */
+Notify_value
+xvmount_xmount_main_status_pane_event_callback(Xv_window win, Event *event, Notify_arg arg, Notify_event_type type)
+{
+	xvmount_xmount_main_objects *ip = (xvmount_xmount_main_objects *) xv_get(xv_get(win, XV_OWNER), XV_KEY_DATA, INSTANCE);
+	
+	fprintf(stderr, "xvmount: xvmount_xmount_main_status_pane_event_callback: event %d\n", event_id(event));
+	
+	/* gxv_start_connections DO NOT EDIT THIS SECTION */
+
+	if (event_action(event) == ACTION_MENU)
+	{
+		interpose_menu_popup(win, event, arg, type);
+	}
+	
+	/* gxv_end_connections */
+
+	return notify_next_event_func(win, (Notify_event) event, arg, type);
+}
+Added in the following piece of code at line 305:
+
+
+/*
+ * User-defined action for `status_pane'.
+ */
+void
+interpose_menu_popup(Xv_window win, Event *event, Notify_arg arg, Notify_event_type type)
+{
+	xvmount_xmount_main_objects *ip = (xvmount_xmount_main_objects *) xv_get(xv_get(win, XV_OWNER), XV_KEY_DATA, INSTANCE);
+	
+	fprintf(stderr, "xvmount: interpose_menu_popup: event %d\n", event_id(event));
+}
+=== END ===

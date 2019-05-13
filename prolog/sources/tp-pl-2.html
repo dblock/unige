@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE></TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01b1Gold (X11; I; SunOS 4.1.4 sun4c) [Netscape]">
+</HEAD>
+<BODY>
+
+<P><B><FONT SIZE=+4>Exercices Prolog TP2 </FONT></B></P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<P><FONT SIZE=+2>1. V&eacute;rifier si une structure est une liste. </FONT></P>
+
+<UL>
+<P>D&eacute;finir le pr&eacute;dicat est_liste qui v&eacute;rifier est-ce
+que son argument est une liste. </P>
+
+<P>Exemple: </P>
+
+<P>?- est_liste(a). </P>
+
+<P><B>no </B></P>
+
+<P>?- est_liste([]). </P>
+
+<P><B>yes</B> </P>
+
+<P>?- est_liste([a, b, c]). </P>
+
+<P><B>yes </B></P>
+
+<P>?- est_liste(.(a, b)). </P>
+
+<P><B>no</B> </P>
+</UL>
+
+<P><FONT SIZE=+2>2. Coller des listes. </FONT></P>
+
+<UL>
+<P>D&eacute;finir le pr&eacute;dicat coller(L1,L2, L3) qui prend deux listes
+L1 et L2 et retourne dans L3 les deux listes L1 et L2 coll&eacute;es: </P>
+
+<P>?- coller([1, 2], [a, b, c], Z). </P>
+
+<P><B>Z = [1, 2, a, b, c]</B> </P>
+
+<P>Comment peut-on utiliser ce pr&eacute;dicat? </P>
+</UL>
+
+<P><FONT SIZE=+2>3. Calcul de la longueur d`une liste. </FONT></P>
+
+<UL>
+<P>D&eacute;finir un pr&eacute;dicat longueur( L, N) qui prend une liste
+L et retourne dans N le nombre d`elements constituant la liste L . </P>
+
+<P>?- longueur([], X). </P>
+
+<P><B>X = 0 </B></P>
+
+<P>?- longueur[1, [2,3] ], X). </P>
+
+<P><B>X = 2 </B></P>
+</UL>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<P>Date remise: le 19.11.96</P>
+
+</BODY>
+</HTML>

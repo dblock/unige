@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> List Manipulation</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" List Manipulation">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html1404 HREF="node67.html"><IMG ALIGN=BOTTOM ALT="next" SRC="http://www.kjemi.unit.no/icons//next_motif.gif"></A>   <A NAME=tex2html1402 HREF="node36.html"><IMG ALIGN=BOTTOM ALT="up" SRC="http://www.kjemi.unit.no/icons//up_motif.gif"></A>   <A NAME=tex2html1396 HREF="node65.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="http://www.kjemi.unit.no/icons//previous_motif.gif"></A>         <BR>
+<B> Next:</B> <A NAME=tex2html1405 HREF="node67.html"> Set Manipulation</A>
+<B>Up:</B> <A NAME=tex2html1403 HREF="node36.html"> Built-In Predicates</A>
+<B> Previous:</B> <A NAME=tex2html1397 HREF="node65.html"> Adding Arithmetic Functions</A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION003240000000000000000> List Manipulation</A></H1>
+<P>
+<DL ><DT>is_list(<i> +Term</i>)
+<DD><BR> 
+<A NAME=2834>&#160;</A>
+Succeeds if <em> Term</em> is bound to the empty list (<TT>[]</TT>
+) or a term with
+functor `<TT>.</TT>
+' and arity 2.
+ <DT>proper_list(<i> +Term</i>)
+<DD><BR> 
+<A NAME=2841>&#160;</A>
+Equivalent to <tt> is_list/1</tt>, but also requires the tail of the list to be
+a list (recursively). Examples:
+<PRE>is_list([x|A])		% true
+proper_list([x|A])	% false
+</PRE>
+ <DT>append(<i> ?List1, ?List2, ?List3</i>)
+<DD><BR> 
+<A NAME=2846>&#160;</A>
+Succeeds when <em> List3</em> unifies with the concatenation of <em> List1</em>
+and <em> List2</em>. The predicate can be used with any instantiation
+pattern (even three variables).
+ <DT>member(<i> ?Elem, ?List</i>)
+<DD><BR> 
+<A NAME=2853>&#160;</A>
+Succeeds when <em> Elem</em> can be unified with one of the members of <em>
+List</em>. The predicate can be used with any instantiation
+pattern.
+ <DT>memberchk(<i> ?Elem, +List</i>)
+<DD><BR> 
+<A NAME=2859>&#160;</A>
+Equivalent to <tt> member/2</tt>, but leaves no choice point.
+ <DT>delete(<i> +List1, ?Elem, ?List2</i>)
+<DD><BR> 
+<A NAME=2864>&#160;</A>
+Delete all members of <em> List1</em> that simultaneously unify with <em>
+Elem</em> and unify the result with <em> List2</em>.
+ <DT>select(<i> ?List1, ?Elem, ?List2</i>)
+<DD><BR> 
+<A NAME=2871>&#160;</A>
+Select an element of <em> List1</em> that unifies with <em> Elem</em>. <em>
+List2</em> is unified with the list remaining from <em> List1</em> after
+deleting the selected element. Normally used with the instantiation
+pattern <em> +List1, -Elem, -List2</em>, but can also be used to insert an
+element in a list using <em> -List1, +Elem, +List2</em>.
+ <DT>nth0(<i> ?Index, ?List, ?Elem</i>)
+<DD><BR> 
+<A NAME=2881>&#160;</A>
+Succeeds when the <em> Index</em>-th element of <em> List</em> unifies with
+<em> Elem</em>. Counting starts at 0.
+ <DT>nth1(<i> ?Index, ?List, ?Elem</i>)
+<DD><BR> 
+<A NAME=2888>&#160;</A>
+Succeeds when the <em> Index</em>-th element of <em> List</em> unifies with
+<em> Elem</em>. Counting starts at 1.
+ <DT>last(<i> ?Elem, ?List</i>)
+<DD><BR> 
+<A NAME=2895>&#160;</A>
+Succeeds if <em> Elem</em> unifies with the last element of <em> List</em>.
+ <DT>reverse(<i> +List1, -List2</i>)
+<DD><BR> 
+<A NAME=2901>&#160;</A>
+Reverse the order of the elements in <em> List1</em> and unify the result
+with the elements of <em> List2</em>.
+ <DT>flatten(<i> +List1, -List2</i>)
+<DD><BR> 
+<A NAME=2907>&#160;</A>
+Transform <em> List1</em>, possibly holding lists as elements into a `flat'
+list by replacing each list with its elements (recursively). Unify the
+resulting flat list with <em> List2</em>. Example:
+<PRE>?- flatten([a, [b, [c, d], e]], X).
+
+X = [a, b, c, d, e]
+</PRE>
+ <DT>length(<i> ?List, ?Int</i>)
+<DD><BR> 
+<A NAME=2913>&#160;</A>
+Succeeds if <em> Int</em> represents the number of elements of list <em>
+List</em>. Can be used to create a list holding only variables.
+ <DT>merge(<i> +List1, +List2, -List3</i>)
+<DD><BR> 
+<A NAME=2919>&#160;</A>
+<i> List1</i> and <i> List2</i> are lists, sorted to the standard order of
+terms (see section <A HREF="node42.html#seccompare"><IMG ALIGN=BOTTOM ALT="gif" SRC="http://www.kjemi.unit.no/icons//cross_ref_motif.gif"></A>).  <i> List3</i> will be unified with an
+ordered list holding the both the elements of <i> List1</i> and <i>
+List2</i>. Duplicates are <b> not</b> removed.
+<P>
+ </DL><BR> <HR><A NAME=tex2html1404 HREF="node67.html"><IMG ALIGN=BOTTOM ALT="next" SRC="http://www.kjemi.unit.no/icons//next_motif.gif"></A>   <A NAME=tex2html1402 HREF="node36.html"><IMG ALIGN=BOTTOM ALT="up" SRC="http://www.kjemi.unit.no/icons//up_motif.gif"></A>   <A NAME=tex2html1396 HREF="node65.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="http://www.kjemi.unit.no/icons//previous_motif.gif"></A>         <BR>
+<B> Next:</B> <A NAME=tex2html1405 HREF="node67.html"> Set Manipulation</A>
+<B>Up:</B> <A NAME=tex2html1403 HREF="node36.html"> Built-In Predicates</A>
+<B> Previous:</B> <A NAME=tex2html1397 HREF="node65.html"> Adding Arithmetic Functions</A>
+<BR> <HR> <P>
+<BR> <HR>
+<P><ADDRESS>
+<I>Passani Luca <BR>
+Tue Nov 14 08:58:33 MET 1995</I>
+</ADDRESS>
+</BODY>

@@ -1,0 +1,3 @@
+cc tp12.c -lcurses
+mv a.out tp12
+chmod 744 tp12

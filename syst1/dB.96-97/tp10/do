@@ -1,0 +1,3 @@
+cc tp10.c
+mv a.out tp10
+chmod 700 tp10

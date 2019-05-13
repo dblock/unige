@@ -1,0 +1,83 @@
+1.
+How do [a,b,c] and [X|Y] match?
+	x=a, y=[b,c]
+
+Do [a] and [X|Y] match?
+	X=a, Y=[]
+
+Do [] and [X|Y] match?
+	No.
+
+Is [X,Y|Z] meaningful?
+	Yes.
+	| ?- [X,Y|Z] = [a,b,c].
+
+	X = a, Y = b, Z = [c]
+
+Is [X|Y,Z] meaningful?
+	No.
+
+Is [X|[Y|Z]] meaningful?
+	Yes.
+	| ?- [X|[Y|Z]] = [a,b,c].
+
+	X = a, Y = b, Z = [c]
+
+How do [a,b] and [A|B] match?
+	A=a, B=[b]
+
+2. Write a Prolog predicate which returns the last element of a list.
+
+last([A],A).
+last([H|T],L)	:- last(T,L).
+
+3.  Write a predicate that checks to see two lists are equal.  (3 pts)
+For example:
+
+| ?- listequal([1,2,3],[1,2,3]).
+yes.
+
+| ?- listequal([1,2,3],[1,3,2]).
+no.
+
+listequal([],[]).
+listequal([H|T],[H|Z]) :- listequal(T,Z).
+
+or just
+
+listequal(A,A).
+
+
+4.  Write a recursive predicate printstring/1 that prints a string, using put/1.
+(3 pts)
+
+printstring([]).
+printstring([H|T]) :- put(H), printstring(T).
+
+
+5.  Write a recursive predicate min/2 that takes a list of numbers as its
+first argument and returns the minimum as the second argument. (3 pts)
+
+min([A], A).
+min([H|T], MT)  :- min(T, MT), MT < H.
+min([H|T], H) :- min(T,MT), H =< MT.
+
+
+
+6.  Write a predicate reverse/2 (reverse, with 2 arguments)
+that reverses a list using the following algorithm:
+
+1. Split the list into head and tail.
+2. Recursively reverse the tail of the original list.
+3. Make a list whose only element is the head of the original list.
+4. Concatenate the reversed tail of the original list
+   with the list created in step 3.  (3 pts)
+
+reverse([],[]).
+reverse([H|T],Result) :-
+	reverse(T,ReversedTail), append(ReversedTail,[H],Result).
+
+Why isn't this algorithm efficient? (3 pts)
+
+Every time it adds an element to the reversed list, it builds up the
+entire list again when it calls append/3.

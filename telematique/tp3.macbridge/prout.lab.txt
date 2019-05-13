@@ -1,0 +1,84 @@
+Bridge 10-10 port 1
+
+   Bytes transmitted                  347538
+   Bytes received                      13118
+   Packets transmitted                  1246
+   Packets received                      200
+   Packets forwarded                     198
+   Packets filtered                        3
+   Packets missed                          0
+   Outbound Packets discarded              0
+
+   CRC errors                              0
+   Carrier lost errors                     0
+   Total Collisions                        0
+   Excess collisions                       0
+   Late collisions                         0
+   Alignment errors                        0      
+
+Bridge 10-10 port 2
+
+   Bytes transmitted                   14763
+   Bytes received                   45980253
+   Packets transmitted                   218
+   Packets received                   245503
+   Packets forwarded                    1304
+   Packets filtered                   244255
+   Packets missed                          0
+   Outbound Packets discarded              0
+
+   CRC errors                              0
+   Carrier lost errors                     0
+   Total Collisions                        1
+   Excess collisions                       0
+   Late collisions                         0
+   Alignment errors                        3   
+
+Bridge 10-10 uptime
+
+Time since last reset:         0 hrs,   7 minutes,  10 seconds.  
+
+Remote Bridge A port 1
+
+   Bytes transmitted                   11146
+   Bytes received                   41477853
+   Packets transmitted                   180
+   Packets received                   221475
+   Packets forwarded                     399
+   Packets filtered                   220685
+   Packets missed                          0
+   Outbound Packets discarded              0
+
+   CRC errors                              0
+   Carrier lost errors                     0
+   Total Collisions                        6
+   Excess collisions                       0
+   Late collisions                         0
+   Alignment errors                        0     
+
+Remote Bridge A port 2
+
+Bytes transmitted                   84055
+   Bytes received                      11446
+   Packets transmitted                   413
+   Packets received                      185
+   Packets forwarded                     185
+   Packets filtered                        0
+   Packets missed                          0
+   Outbound Packets discarded            474
+   Output queue length (pkts)              0
+   Max output queue length (pkts)        128
+   Output queue length (bytes)             0
+   Max output queue length (bytes)      3028
+   Discard threshold (bytes)            2271
+   CRC/alignment errors                    0
+   T1 timer timeouts                       0
+   HDLC error indications                  0
+   Reject frames received                  1
+
+   Carrier detect state               High
+   HDLC state                         Normal  
+
+Remote Bridge A uptime
+
+Time since last reset:         0 hrs,   4 minutes,  43 seconds.  

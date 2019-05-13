@@ -1,0 +1,35 @@
+	! [CMFortran.TP5.ATO-II][17.11.97]
+	! compile using cmf ... -lcmsr -lX11
+	! [Daniel Doubrovkine][doubrov5@cuimail.unige.ch]
+
+	! this demonstrates microbes walking on a matrix called johny
+	! ... johny walkers
+
+	IMPLICIT NONE
+	include '/usr/include/cm/display-cmf.h'
+
+	INTEGER,PARAMETER:: xySize=128, nwalkers=100
+	INTEGER,ARRAY(xySize, xySize)::johny
+	INTEGER,ARRAY(nwalkers,2)::walkers, whisky
+	INTEGER i
+	LOGICAL NoQuit
+
+	johny = 0
+	walkers = 0
+	
+	CALL cmf_random(walkers, xySize)
+	CALL FSR_SELECT_DISPLAY_MENU(8, xySize, xySize)
+
+	NoQuit = .true.
+	DO WHILE(NoQuit)
+	   CALL cmf_random(whisky, 3) ! randomize the displacement degree 
+	   walkers = walkers + whisky - 1 ! calculate the new position
+	   WHERE (johny.GT.0)
+	      johny = johny - 20 ! show a trail... so the johny walkers look a bit more alive
+	   END WHERE
+	   FORALL (i=1:nwalkers) johny(walkers(i,1),walkers(i,2)) = 200 !the forall seems to be the only way:(
+	   CALL FSR_WRITE_TO_DISPLAY(johny) 
+	END DO
+       
+        END
+

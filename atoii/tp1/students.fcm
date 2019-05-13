@@ -1,0 +1,87 @@
+! [CMFortran.TP1.ATO-II][10.22.97]
+! [Daniel Doubrovkine][doubrov5@cuimail.unige.ch]
+! 
+! state: [x] compiling
+!        [x] running
+!        [ ] approved
+ 
+	PROGRAM Students	
+	 IMPLICIT NONE
+	 INTEGER, PARAMETER::NbStudents=10.d0
+	 REAL, ARRAY (nbStudents)::Math,Hist,Biol,Average
+	 INTEGER, ARRAY (nbStudents)::Valid
+	 REAL TotalSum
+	 INTEGER I, TotalValid
+	 
+
+	 write (*,*), '[CMFortran.TP1.ATO-II][10.22.97]'
+         write (*,*), '[Daniel Doubrovkine][doubrov5@cuimail.unige.ch]'
+         Math = [-1.d0,1.d0,2.d0,3.d0,2.d0,4.d0,5.d0,6.d0,-1.d0,0.d0]   !notes in maths 
+	 Hist = [3.5d0,4.d0,5.d0,1.d0,2.d0,1.d0,3.d0,6.d0,4.5d0,1.d0]   !notes in history
+	 Biol = [2.d0,1.d0,3.d0,4.d0,5.d0,2.5d0,1.d0,2.d0,3.5d0,6.d0]   !notes in biology
+
+	 Average = Math + Hist + Biol                                   !the sum of notes (used for average) 
+	 Valid = 3                                                      !no. of notes oblig.
+         WHERE (Math.lt.0)                                              !maths are not oblig.
+	  Valid = 2                                                     !decrement the valid counter
+	  Average = Average - Math                                      !recalculate the average sum
+	 END WHERE
+	 Average = Average / Valid                                      !this is the real average for a student
+        
+         write (*,*) , 'history and biology are obligatory:'
+	 DO i=1,NbStudents 
+	  write(6,*), Average(i)                                        !output each average value
+	 END DO 
+
+	 ! no obligatory notes
+	 Math = [-1.d0,-1.d0,2.d0,3.d0,2.d0,4.d0,5.d0,6.d0,-1.d0,0.d0]   !notes in maths
+	 Hist = [3.5d0,-1.d0,5.d0,-1.d0,2.d0,1.d0,3.d0,6.d0,-1.d0,1.d0]   !notes in history
+	 Biol = [2.d0,-1.d0,3.d0,4.d0,5.d0,2.5d0,1.d0,2.d0,-1.d0,6.d0]   !notes in biology
+
+	 Average = 0
+	 Valid = 0
+	 WHERE (Math.ge.0) 
+	  Valid = Valid + 1
+	  Average = Average + Math
+	 END WHERE
+	 WHERE (Hist.ge.0)
+	  Valid = Valid + 1
+	  Average = Average + Hist
+         END WHERE
+	 WHERE (Biol.ge.0)
+	  Valid = Valid + 1
+	  Average = Average + Biol
+         END WHERE  
+                                         
+	 WHERE (Valid.gt.0)
+	  Average = Average / Valid                                      !this is the real average for a student
+	 ELSEWHERE
+	  Average = -1  
+         END WHERE
+
+         write (*,*) , 'no obligatory notes (using a new array):'
+	 DO i=1,NbStudents 
+	  IF (Average(i).GE.0) THEN
+	   write(6,*), Average(i)                                        !output each average value
+	  ELSE
+	   write(6,*),'  (no notes)'
+	  END IF   
+	 END DO 
+
+	 ! the whole class average:
+	 ! we should exclude those who have no valid notes at all, since the average is not zero then
+	 TotalSum = 0
+	 TotalValid = 0
+	 DO I=1,nbStudents                                               ! fortran didn't seem to
+	  IF (Valid(I).GT.0) THEN                                        ! accept TotalSum = TotalSum + ARRAY
+	   TotalSum = TotalSum + Average(I)                              ! inside a where parallel function
+	   TotalValid = TotalValid + 1
+	  END IF 
+	 END DO
+	 
+	 IF (TotalValid.gt.0) THEN
+ 	  write (6, *), 'whole class average: ', TotalSum / TotalValid
+	 ELSE
+	  write (*, *), 'no valid notes.'  
+	 END IF   
+	END

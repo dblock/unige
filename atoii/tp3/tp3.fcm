@@ -1,0 +1,68 @@
+	! [CMFortran.TP3.ATO-II][07.11.97]
+	! compile using cmf ... -lcmsr -lX11
+	! [Daniel Doubrovkine][doubrov5@cuimail.unige.ch]
+
+	IMPLICIT NONE
+	include '/usr/include/cm/display-cmf.h'
+
+        INTEGER, PARAMETER::xSize=256, ySize=256
+	REAL*8, PARAMETER::lX=-2,lY=-2,rX=2,rY=2
+	COMPLEX, ARRAY(xSize, ySize)::z0,zn
+	COMPLEX, ALLOCATABLE ARRAY(:)::stack
+	INTEGER, ARRAY(xSize, ySize)::pPlan
+	INTEGER i,j,iCnt
+	INTEGER, PARAMETER::nIter = 256
+	LOGICAL NoQuit, Recalc
+	INTEGER zCnt
+	INTEGER, PARAMETER::zFct=2
+	INTEGER tMouse, Dummy
+	COMPLEX Center, zPoint
+
+	forall(i=1:xSize,j=1:ySize)z0(i,j)=
+     +    cmplx(lX+j*((rX-lX)/xSize),rY-i*((rY-lY)/ySize))
+	
+	NoQuit = .true.
+	Recalc = .true.
+	zCnt = 0
+	CALL fsr_select_workstation_menu(8,xSize,ySize)
+	tMouse=fsr_allocate_mouse_point()
+	DO WHILE(NoQuit)
+	   
+	   IF (Recalc) THEN
+	    zn = 0
+	    pPlan = 0
+	    DO iCnt=1,nIter
+             zn=zn**2-z0
+             WHERE (abs(zn) < 2.0)
+	        pPlan=pPlan+1            
+             END WHERE
+            END DO 
+	   Recalc = .false. 
+	   CALL fsr_write_to_display(pPlan)
+	   END IF
+
+        Dummy=fsr_get_mouse_point(tMouse)
+	SELECT CASE (fsr_mouse_point_pressed(tMouse))
+	CASE (button1)
+	   zPoint=z0(fsr_mouse_point_x(tMouse),fsr_mouse_point_y(tMouse))
+	   z0=z0/zFct
+	   Center = z0(xSize/2,ySize/2)
+	   z0=z0-Center+zPoint
+	   zCnt = zCnt + 1
+	   Recalc = .true.
+	CASE (button2)
+	   NoQuit = .false.
+	CASE (button3)
+	   IF (zCnt>0) THEN
+	      z0=z0+Center-zPoint
+	      z0=z0*zFct
+	      zCnt = zCnt - 1
+	      Recalc = .true.
+	   END IF
+	END SELECT
+	   
+	END DO
+	
+       
+        END
+

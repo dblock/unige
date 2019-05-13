@@ -1,0 +1,31 @@
+#!/usr/bin/tcsh
+
+# TP8 - Système Info (c) Daniel Doubrovkine - 1997 - uniGe - doubrov5@cui.unige.ch
+
+set tp8d = 0
+set tp8u = 0
+foreach pParam ($argv)
+	if ("$pParam" == "-d") set tp8d = 1
+	if ("$pParam" != "-d") set tp8u = 1 
+	end
+
+
+if ($tp8u) then
+	foreach pParam ($argv)
+		if ("$pParam" != "-d") then
+                        if ($tp8d) then 
+				ypcat passwd | sed -e "/^$pParam\:/p" -n | awk -F:  '{print $5 " -> " $7 " (" $6 ")"}'	
+				else
+				ypcat passwd | sed -e "/^$pParam\:/p" -n | awk -F:  '{print $5 " -> " $7 }' 
+				endif
+			endif
+		end
+
+	else
+	if ($tp8d) then	
+		ypcat passwd | awk -F:  '{print $5 " -> " $7 " (" $6 ")"}'
+		else
+		ypcat passwd | awk -F:  '{print $5 " -> " $7}'
+		endif
+
+	endif

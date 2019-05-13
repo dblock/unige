@@ -1,0 +1,106 @@
+- depuis le 129.194.88.10 (labhprouter2) ping sur 129.194.88.9
+
+
+Hewlett-Packard Company         LABHP_ROUTER2              165-   -19165  165:80
+I 51/65/16 16:51:65 ip.ip_interface: 'ARP: 129.194.88.9 at 0000a200a987 ENET'
+================================-  SESSION 4 -==================================
+129.194.88.9 is alive
+
+- depuis le 129.194.88.9 (labhprouter1) ping sur 129.194.88.10
+
+
+Hewlett-Packard Company         LABHP_ROUTER1              165-   -19165  165:80
+
+================================-  SESSION 4 -==================================
+129.194.88.10 is alive
+
+
+---- configuration editor sur 129.194.88.10
+
+Hewlett-Packard Company         LABHP_ROUTER2              165-   -19165  165:80
+I 51/65/16 16:51:65 ip.ip_interface: 'ARP: 129.194.88.9 at 0000a200a987 ENET'
+================================-  SESSION 4 -==================================
+Configuration Editor 1.19              Current File : CONFIG
+
+
+
+
+1.  System (1)
+2.  Software (2)
+3.  Lines (4)
+4.  Circuits (4)
+5.  Circuit Groups (4)
+6.  Bridge (0)
+7.  DoD Internet Router (1)
+8.  DECNET Routing Service (0)
+9.  SNMP Sessions (2)
+10. XNS/IPX Routing Service (0)
+11. AppleTalk Router (0)
+
+
+Enter Selection (0 for Previous Menu) : ____                                   
+
+----- interface XCVR1 
+	- 7.  DoD Internet Router (1) 
+	- 1. Network Interface Definitions (1)
+	- 1. System Session
+
+================================-  SESSION 4 -==================================
+Configuration Editor 1.19              Current File : CONFIG
+Auto Enable          : Yes
+Global Broadcast     : Yes
+RIP Network Diameter : 15
+Mode                 : Router/Host
+
+
+
+                  Network Interface Definitions
+    Internet Address     Subnet Mask          Circuit Group
+    ----------------     ----------------     ----------------
+ 1. 129.194.88.10        255.255.252.0        G_E21
+                                                                               
+---- vérifier que le RIP n'est pas activé
+
+Internet Address : 129.194.88.9
+Subnet Mask      : 255.255.252.0       Receive Broadcast  : Network and Subnet
+Circuit Group    : G_E21               Transmit Broadcast : All Ones
+
+Address Resolution : ARP               RIP Supply : No
+Normal ARP         : Yes               RIP Listen : No
+Proxy ARP          : No                Default Route Supply : No
+                                       Default Route Listen : No
+UDP Checksum Off   : No                Poisoned Reverse     : Yes
+                                       RIP Interface Cost   : 1
+
+Address Mask Reply   : Yes             ASB Flood  : No
+MTU Discovery Option : Yes                                                     
+
+-- router 2
+
+Hewlett-Packard Company         LABHP_ROUTER2              165-   -19165  165:80
+
+================================-  SESSION 4 -==================================
+Configuration Editor 1.19              Current File : CONFIG
+Internet Address : 129.194.88.10
+Subnet Mask      : 255.255.252.0       Receive Broadcast  : Network and Subnet
+Circuit Group    : G_E21               Transmit Broadcast : All Ones
+
+Address Resolution : ARP               RIP Supply : No
+Normal ARP         : Yes               RIP Listen : No
+Proxy ARP          : No                Default Route Supply : No
+                                       Default Route Listen : No
+UDP Checksum Off   : No                Poisoned Reverse     : Yes
+                                       RIP Interface Cost   : 1
+
+Address Mask Reply   : Yes             ASB Flood  : No
+MTU Discovery Option : Yes
+
+
+---- ajouté une nouvelle Network Interface Definition
+
+router 2:  2. 192.33.224.254       255.255.255.0 
+router 1:  2. 192.33.223.254       255.255.255.0              
+
+
+
+

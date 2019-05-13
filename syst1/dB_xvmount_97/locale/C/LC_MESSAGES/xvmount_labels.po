@@ -1,0 +1,41 @@
+domain "xvmount_labels"
+msgid  "[unspecified]"
+msgstr
+msgid  "mtab:\n"
+msgstr
+msgid  "fstab:\n"
+msgstr
+msgid  "[floppy - msdos]"
+msgstr
+msgid  "[floppy - linux]"
+msgstr
+msgid  "[floppy - win95]"
+msgstr
+msgid  "[second floppy - msdos]"
+msgstr
+msgid  "[second floppy - linux]"
+msgstr
+msgid  "[second floppy - win95]"
+msgstr
+msgid  "[cdrom]"
+msgstr
+msgid  "XMount"
+msgstr
+msgid  "mounted:"
+msgstr
+msgid  "available:"
+msgstr
+msgid  "device:"
+msgstr
+msgid  "mnt:"
+msgstr
+msgid  "file systems:"
+msgstr
+msgid  "additionnal:"
+msgstr
+msgid  "About XMount"
+msgstr
+msgid  "UniGe"
+msgstr
+msgid  "Thanks!"
+msgstr

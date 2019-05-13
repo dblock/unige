@@ -1,0 +1,34 @@
+V "GNAT Lib v3.04  "
+S "1233433443      "
+M P
+
+U random_test%b		random_test.adb		b5569684  NE  SU
+W ada%s			ada.ads			ada.ali
+W ada.integer_text_io%s	a-inteio.ads		a-inteio.ali
+W random%s		random.adb		random.ali
+W text_io%s		text_io.ads		text_io.ali
+
+D ada.ads		960607050237
+D a-finali.ads		960607050241
+D a-filico.ads		960607050326
+D a-inteio.ads		960607050241
+D a-ioexce.ads		960607050241
+D a-stream.ads		960607050248
+D a-tags.ads		960607050251
+D a-textio.ads		960607050258
+D a-tiinio.ads		960607050255
+D random.ads		970204134635
+D random_test.adb	970204134717
+D system.ads		960607050231
+D s-exctab.ads		960607050336
+D s-ficobl.ads		960607050324
+D s-finimp.ads		960607050325
+D s-finroo.ads		960607050326
+D s-parame.ads		960607050331
+D s-secsta.ads		960607050334
+D s-stalib.ads		960607050335
+D s-stoele.ads		960607050335
+D s-stratt.ads		960607050336
+D s-unstyp.ads		960607050345
+D text_io.ads		960607050237
+D unchconv.ads		960607050237

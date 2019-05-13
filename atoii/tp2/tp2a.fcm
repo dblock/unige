@@ -1,0 +1,26 @@
+	! [CMFortran.TP2a.ATO-II][30.10.97]
+	! compile using cmf ... -lcmsr -lX11
+	! [Daniel Doubrovkine][doubrov5@cuimail.unige.ch]
+
+	IMPLICIT NONE
+ 
+        INTEGER,PARAMETER::xySize = 128
+        INTEGER,ARRAY(xySize,xySize)::first, second
+        INTEGER I, J
+	INTEGER,PARAMETER::Steps = 100
+ 
+        first = 0.0
+       	second = 0.0
+        
+	first(xySize / 2, xySize / 2) = 1.0
+        CALL FSR_SELECT_DISPLAY_MENU(8,xySize,xySize)
+        DO I = 1, Steps
+         second = 0
+         second = second + cshift(first,dim=1,shift=1)
+         second = second + cshift(first,dim=1,shift=-1)
+         second = second + cshift(first,dim=2,shift=1)
+         second = second + cshift(first,dim=2,shift=-1)
+         first = mod(second, 2)
+         CALL FSR_WRITE_TO_DISPLAY(200 * first)
+       	END DO
+        END
